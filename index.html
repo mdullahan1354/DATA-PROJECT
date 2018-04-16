@@ -1,110 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Jiaqi And Matthew</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>    
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUGb_-uj7tui0Z-mCbBOSpSNGwiA9_hGI"></script>
+ <title>Jiaqi And Matthew</title>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script> 
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUGb_-uj7tui0Z-mCbBOSpSNGwiA9_hGI"></script>
 <style>
-    body {
-    background-color: lightgray;
-    }
-    #mp .panel{
-        width:300px;        
-        padding:10px;       margin:10px;
-        border-radius:10px; box-shadow:black 5px 5px 5px;
-        display:inline-block;
-    }
-    #mp .panel-borough{
-        background-color:#CDE3FF;  font-size:10pt;
-        padding:10px;       font-family:"Arial";
-        
-        
-    }
-    #mp .panel-details{
-        background-color:#B1D8F8;
-        padding:10px;       font-family:"Arial";
-        height: 370px    
-    }
-    #mp .panel-footer{
-        background-color:#BAEFFC;
-        padding:10px;       font-family:"Arial";
-        height:175px;      
-    }
-    p,a{
-        font-size:14pt;
-        font-family:"Arial";
-    }
-    button{
-        font-weight:bold;   text-decoration:none;
-        color:black;      border-radius:10px;            
-        padding:5px;             
-        cursor: pointer;    background-color:#09FF00;
-    }
-    #googleMap{
-        height:500px;   width: 1650px;
-        float: right;  box-shadow:#000000 5px 5px 5px; 
-    }
-    .functions{
-        text-align: center; 
-    }
-    h1{
-        font-size:40pt;
-    }
+ body {
+ background-color: lightgray;
+ }
+ #mp .panel{
+ width:300px; 
+ padding:10px; margin:10px;
+ border-radius:10px; box-shadow:black 5px 5px 5px;
+ display:inline-block;
+ }
+ #mp .panel-borough{
+ background-color:#CDE3FF; font-size:10pt;
+ padding:10px; font-family:"Arial";
+ 
+ 
+ }
+ #mp .panel-details{
+ background-color:#B1D8F8;
+ padding:10px; font-family:"Arial";
+ height: 340px 
+ }
+ #mp .panel-footer{
+ background-color:#BAEFFC;
+ padding:10px; font-family:"Arial";
+ height:175px; 
+ }
+ p,a{
+ font-size:14pt;
+ font-family:"Arial";
+ }
+ button{
+ font-weight:bold; text-decoration:none;
+ color:black; border-radius:10px; 
+ padding:5px; 
+ cursor: pointer; background-color:#09FF00;
+ }
+ #googleMap{
+ height:500px; width: 1650px;
+ float: right; box-shadow:#000000 5px 5px 5px; 
+ }
+ .functions{
+ text-align: center; 
+ }
+ h1{
+ font-size:40pt;
+ }
 </style>
 <script type="text/template" id="Afterschool">
-    <div class='panel panel-default'>
-        <div class='panel-borough'>{{borough_community}}</div>
-        <div class='panel-details'>
-            <h2><marquee>{{program_type}}</marquee><br><br>{{agency}}<br><br>{{site_name}}</h2>
-            <p>Borough: {{borough_community}}<br></p>
-            <p>Contact number: {{contact_number}}</p>
-            <p>Required age: {{grade_level_age_group}}</p>   
-        </div>
-        <div class='panel-footer'>
-            <p>Address  :    {{address}}</p>
-            <P>Post code  :    {{post_code}}</p>
-            <button onclick="GoogMap( {{latitude}}, {{longitude}} )">Click to see the map</button>   
-        </div>
-    </div>
+ <div class='panel panel-default'>
+ <div class='panel-borough'>{{site_name}}</div>
+ <div class='panel-details'>
+ <h2><marquee>{{program_type}}</marquee><br><br>{{agency}}<br></h2>
+ <p>Borough: {{borough_community}}<br></p>
+ <p>Contact number: {{contact_number}}</p>
+ <p>Required age: {{grade_level_age_group}}</p> 
+ </div>
+ <div class='panel-footer'>
+ <p>Address : {{address}}</p>
+ <P>Post code : {{post_code}}</p>
+ <button onclick="GoogMap( {{latitude}}, {{longitude}} )">Click to see the map</button> 
+ </div>
+ </div>
 </script>
 <script>
-function loadJSON(){        
-    $.getJSON("https://data.cityofnewyork.us/resource/fu5n-kurd.json", function(result){        
-        NYCprograms(result);
-    }); 
+function loadJSON(){ 
+ $.getJSON("https://data.cityofnewyork.us/resource/fu5n-kurd.json", function(result){ 
+ NYCprograms(result);
+ }); 
 }
 function NYCprograms(data){
-    var build = "";
-    var output = document.getElementById("op");
-    var borough = document.getElementById("borough").value;
-    var template = document.getElementById("Afterschool").innerHTML;
-    for(i=0; i<data.length; i++){
-        if (data[i].borough_community.toLowerCase().indexOf( borough.toLowerCase() ) != -1){        
-            build += Mustache.render(template, data[i]);
-        }   
-    output.innerHTML = build;    
+ var build = "";
+ var output = document.getElementById("op");
+ var borough = document.getElementById("borough").value;
+ var template = document.getElementById("Afterschool").innerHTML;
+ for(i=0; i<data.length; i++){
+ if (data[i].borough_community.toLowerCase().indexOf( borough.toLowerCase() ) != -1){ 
+ build += Mustache.render(template, data[i]);
+ } 
+ output.innerHTML = build; 
 }}
 function GoogMap(Lat, Lon){
-    var gMap = document.getElementById("googleMap");
-    var mapProp= {
-            center:new google.maps.LatLng(Lat, Lon),
-            zoom:18,
-        };
-    var map=new google.maps.Map(gMap,mapProp);
+ var gMap = document.getElementById("googleMap");
+ var mapProp= {
+ center:new google.maps.LatLng(Lat, Lon),
+ zoom:18,
+ };
+ var map=new google.maps.Map(gMap,mapProp);
 }
 </script>
 </head>
 <body id="mp">
-    <div class="container">
-        <div class="functions">
-            <h1>NYC After School Programs
-            </h1><h3><img src='https://i0.wp.com/parent.myiusd.net/wp-content/uploads/2016/04/Afterschool4.jpg?zoom=2&resize=720%2C340' style="width:256px;height:128px;"></img></h3>
-            <p>Search borough: <input type="text" id="borough" placeholder="Enter borough area"></p> 
-            <button onclick="loadJSON()">Show the Programs</button>            
-        </div>
-        <div id="googleMap"></div>
-        <div id="op"></div>
-    </div>
+ <div class="container">
+ <div class="functions">
+ <h1>NYC After School Programs
+ </h1><h3><img src='https://i0.wp.com/parent.myiusd.net/wp-content/uploads/2016/04/Afterschool4.jpg?zoom=2&resize=720%2C340' style="width:256px;height:128px;"></img></h3>
+ <p>Search borough: <input type="text" id="borough" placeholder="Enter borough area"></p> 
+ <button onclick="loadJSON()">Show the Programs</button> 
+ </div>
+ <div id="googleMap"></div>
+ <div id="op"></div>
+ </div>
 </body>
 </html>
